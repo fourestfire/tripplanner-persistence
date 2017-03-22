@@ -20,4 +20,28 @@ router.get('/', function(req, res, next) {
   .catch(next);
 });
 
+router.get('/api/hotels', function(req, res, next) {
+  Hotel.findAll()
+  .then(function(data) {
+    res.status(201).json(data);
+  })
+  .catch(next);
+});
+
+router.get('/api/restaurants', function(req, res, next) {
+  Restaurant.findAll()
+  .then(function(data) {
+    res.status(201).json(data);
+  })
+  .catch(next);
+});
+
+router.get('/api/activities', function(req, res, next) {
+  Activity.findAll()
+  .then(function(data) {
+    res.status(201).json(data);
+  })
+  .catch(next);
+});
+
 module.exports = router;
