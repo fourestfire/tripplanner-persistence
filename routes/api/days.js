@@ -32,6 +32,12 @@ router.delete('/api/days/:id', function(req, res, next) {
     .then((specificDay) => {
         return specificDay.destroy()
     })
+    .then((dayThatWasDestroyed) => {
+      console.log("wedestroyedthisday", dayThatWasDestroyed)
+      console.log("reqparamsid", req.params.id)
+      Day.shift(req.params.id)
+      return "";
+    })
     .then(() => {
         res.status(202).send('deleted that day');
     })
@@ -40,8 +46,10 @@ router.delete('/api/days/:id', function(req, res, next) {
 
 //creates a specific day
 router.post('/api/days/:id', function(req, res, next) {
-    Day.create({
-        id: req.params.id
+    Day.findOrCreate({
+      where: {
+        number: req.params.id
+      }
     })
     .then((instance) =>  {
         res.send('created a day!')

@@ -9,7 +9,7 @@ $(function(){
 
   var hotels, restaurants, activities
 
-
+  // on page load
   //Ajax to fill the menu bars
   $.ajax({
     method: 'GET',
@@ -42,6 +42,30 @@ $(function(){
   .catch( console.error.bind(console) );
 
 
+  // create first day if no day exists
+  $.ajax({
+    method: 'POST',
+    url: 'api/days/1'
+  })
+  .then((message) => {console.log(message)})
+  .catch( console.error.bind(console) );
+
+  // populate view with existing days
+  $.ajax({
+      method: 'GET',
+      url: '/api/days',
+    })
+    .then(function (responseData) {
+      console.log('got all data')
+      var dayLength = responseData.length;
+      for (var i = 1; i < dayLength; i++) {
+        dayModule.create(responseData[i]);
+      }
+      // tripModule.switchTo(1)
+    })
+    .catch( console.error.bind(console) );
+
+
   //also fills menu bar
   // make all the option tags (second arg of `forEach` is a `this` binding)
 
@@ -66,16 +90,25 @@ $(function(){
   //ajax associated with the "day"
 
   $('#day-add').on('click', function() {
-    console.log('creating a day!');
-    console.log('this in creating is:', $(this));
-    // $.ajax({
-    //   method: 'POST',
-    //   url: 'api/days/'
-    // });
+    // console.log('creating a day!');
+    var id = $(this).siblings().last().text();
+    $.ajax({
+      method: 'POST',
+      url: 'api/days/' + id
+    })
+    .then((message) => {console.log(message)})
+    .catch( console.error.bind(console) );
   })
 
   $('#day-title > button.remove').on('click', function() {
     console.log('deleting the day')
-    console.log('this in creating is:', $(this));
+    var id = $(this).prev().text().slice(-1);
+    $.ajax({
+      method: 'DELETE',
+      url: 'api/days/' + id
+    })
+    .then((message) => {console.log(message)})
+    .catch( console.error.bind(console) );
+
   })
 });
