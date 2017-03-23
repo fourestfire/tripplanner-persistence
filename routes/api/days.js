@@ -48,23 +48,52 @@ router.post('/api/days/:dayId/hotel/:hotelId', function(req, res, next) {
     console.log('we bout to save a homie');
     Day.findOne({
         where: {
-            number: +req.params.dayId
+            number: req.params.dayId
         }
     })
     .then((dayToModify) => {
-        dayToModify.setHotelId(req.params.hotelId);
-        return daytoModify.save()
-        .then(function() {
-            console.log('saved homie')
-        })
-        .catch(()=> {
-            console.log('error in 1st place')
-        });
+        console.log(dayToModify)
+        dayToModify.setHotel(req.params.hotelId);
+        console.log("saved a homie")
     })
     .catch(()=> {
         console.log('error in 2nd place')
     });
 });
+
+router.post('/api/days/:dayId/restaurants/:restaurantId', function(req, res, next) {
+    console.log('we bout to save a homie');
+    Day.findOne({
+        where: {
+            number: req.params.dayId
+        }
+    })
+    .then((dayToModify) => {
+        console.log(dayToModify)
+        dayToModify.setRestaurants(req.params.restaurantId);
+        console.log("saved a homie")
+    })
+    .catch(()=> {
+        console.log('error in 2nd place')
+    });
+});
+
+// router.post('/api/days/:dayId/activities/:activityId', function(req, res, next) {
+//     console.log('we bout to save a homie');
+//     Day.findOne({
+//         where: {
+//             number: req.params.dayId
+//         }
+//     })
+//     .then((dayToModify) => {
+//         console.log(dayToModify)
+//         dayToModify.setHotel(req.params.hotelId);
+//         console.log("saved a homie")
+//     })
+//     .catch(()=> {
+//         console.log('error in 2nd place')
+//     });
+// });
 
 //creates a specific day
 router.post('/api/days/:id', function(req, res, next) {

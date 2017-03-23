@@ -12,6 +12,8 @@ Activity.belongsTo(Place);
 
 Day.belongsToMany(Restaurant, {through: 'day_restaurant'});
 Day.belongsToMany(Activity, {through: 'day_activity'});
+Restaurant.belongsToMany(Day, {through: 'day_restaurant'});
+Activity.belongsToMany(Day, {through: 'day_activity'});
 Day.belongsTo(Hotel); // puts hotel id on day, sets association methods on hotel
 Hotel.hasOne(Day);
 // Day.HasOne(Hotel) // puts day id on hotel

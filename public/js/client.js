@@ -115,36 +115,31 @@ $(function(){
 
   $('.panel-body').on('click', 'button', function(){
     let type = $(this).prev().data('type');
+    // console.log('the current day is:', currentDay);
     let currentDay = $('#day-title > button.remove').prev().text().slice(-1);
+    var idToAdd = $(this).prev().val()
 
     if(type === 'hotel') {
-      // console.log('hotelsArr', hotels);
-      var hotelIdToAdd = $(this).prev().val()
-      console.log('id to find/add:', hotelIdToAdd)
-
-
-      var hotelToAdd = hotels.find((current) => {
-        console.log(current);
-        return +current.id === +hotelIdToAdd;
+      var attractionToAdd = hotels.find((current) => {
+        return +current.id === +idToAdd;
       })
-
-      console.log('hotelToAdd', hotelToAdd);
-      var hotelAttraction = attractionModule.create(hotelToAdd)
-      tripModule.addToCurrent(hotelAttraction);
-
-
-      console.log('the current day is:', currentDay);
-      $.ajax({
-        method: 'POST',
-        url: `api/days/${currentDay}/hotel/${hotelIdToAdd}`
-      })
-      .then((message) => {console.log(message)})
-      .catch( console.error.bind(console) );
     } else if(type === 'restaurants') {
-
+      var attractionToAdd = restaurants.find((current) => {
+        return +current.id === +idToAdd;
+      })
     } else if(type === 'activities') {
-
+      var attractionToAdd = activities.find((current) => {
+        return +current.id === +idToAdd;
+      })
     }
+    var attraction = attractionModule.create(attractionToAdd)
+    tripModule.addToCurrent(attraction);
+    $.ajax({
+      method: 'POST',
+      url: `api/days/${currentDay}/${type}/${idToAdd}`
+    })
+    .then((message) => {console.log(message)})
+    .catch( console.error.bind(console) );
   })
 
 });
