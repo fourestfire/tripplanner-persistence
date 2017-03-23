@@ -2,13 +2,15 @@
 
 $(function(){
 
-var $optionsPanel = $('#options-panel');
-var $hotelSelect = $optionsPanel.find('#hotel-choices');
-var $restaurantSelect = $optionsPanel.find('#restaurant-choices');
-var $activitySelect = $optionsPanel.find('#activity-choices');
+  var $optionsPanel = $('#options-panel');
+  var $hotelSelect = $optionsPanel.find('#hotel-choices');
+  var $restaurantSelect = $optionsPanel.find('#restaurant-choices');
+  var $activitySelect = $optionsPanel.find('#activity-choices');
 
-var hotels, restaurants, activities
+  var hotels, restaurants, activities
 
+
+  //Ajax to fill the menu bars
   $.ajax({
     method: 'GET',
     url: '/api/hotels',
@@ -39,6 +41,8 @@ var hotels, restaurants, activities
   })
   .catch( console.error.bind(console) );
 
+
+  //also fills menu bar
   // make all the option tags (second arg of `forEach` is a `this` binding)
 
   function makeOption (databaseAttraction) {
@@ -58,4 +62,20 @@ var hotels, restaurants, activities
     tripModule.addToCurrent(attraction);
   });
 
+
+  //ajax associated with the "day"
+
+  $('#day-add').on('click', function() {
+    console.log('creating a day!');
+    console.log('this in creating is:', $(this));
+    // $.ajax({
+    //   method: 'POST',
+    //   url: 'api/days/'
+    // });
+  })
+
+  $('#day-title > button.remove').on('click', function() {
+    console.log('deleting the day')
+    console.log('this in creating is:', $(this));
+  })
 });

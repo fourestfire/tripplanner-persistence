@@ -6,16 +6,18 @@ var Activity = require('../../models/activity');
 var Day = require('../../models/day');
 
 //finds all days
+//this will happen when we refresh the page
+//and need to get all of the days again
 router.get('/api/days', function(req, res, next) {
     Day.findAll()
-    .then( (daysArr) => {
+    .then((daysArr) => {
         res.status(200).send(daysArr);
     })
     .catch(next)
 });
 
 
-//specific day
+//get specific day
 router.get('/api/days/:id', function(req, res, next) {
     Day.findById(req.params.id)
     .then((specificDay) => {
@@ -25,18 +27,26 @@ router.get('/api/days/:id', function(req, res, next) {
 });
 
 //delete one specific day
-
 router.delete('/api/days/:id', function(req, res, next) {
     Day.findById(req.params.id)
     .then((specificDay) => {
-        res.status(200).send(specificDay);
+        return specificDay.destroy()
+    })
+    .then(() => {
+        res.status(202).send('deleted that day');
     })
     .catch(next)
 });
 
-
-router.post('/api/days/:id/restaurants', function(req, res, next) {
-
+//creates a specific day
+router.post('/api/days/:id', function(req, res, next) {
+    Day.create({
+        id: req.params.id
+    })
+    .then((instance) =>  {
+        res.send('created a day!')
+    })
+    .catch(next)
 })
 
 module.exports = router;
