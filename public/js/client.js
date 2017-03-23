@@ -7,7 +7,8 @@ $(function(){
   var $restaurantSelect = $optionsPanel.find('#restaurant-choices');
   var $activitySelect = $optionsPanel.find('#activity-choices');
 
-  var hotels, restaurants, activities
+  var hotels, restaurants, activities;
+
 
   // on page load
   //Ajax to fill the menu bars
@@ -87,8 +88,8 @@ $(function(){
   });
 
 
-  //ajax associated with the "day"
 
+  //ajax associated with the "day"
   $('#day-add').on('click', function() {
     // console.log('creating a day!');
     var id = $(this).siblings().last().text();
@@ -111,4 +112,39 @@ $(function(){
     .catch( console.error.bind(console) );
 
   })
+
+  $('.panel-body').on('click', 'button', function(){
+    let type = $(this).prev().data('type');
+    let currentDay = $('#day-title > button.remove').prev().text().slice(-1);
+
+    if(type === 'hotel') {
+      // console.log('hotelsArr', hotels);
+      var hotelIdToAdd = $(this).prev().val()
+      console.log('id to find/add:', hotelIdToAdd)
+
+
+      var hotelToAdd = hotels.find((current) => {
+        console.log(current);
+        return +current.id === +hotelIdToAdd;
+      })
+
+      console.log('hotelToAdd', hotelToAdd);
+      var hotelAttraction = attractionModule.create(hotelToAdd)
+      tripModule.addToCurrent(hotelAttraction);
+
+
+      console.log('the current day is:', currentDay);
+      $.ajax({
+        method: 'POST',
+        url: `api/days/${currentDay}/hotel/${hotelIdToAdd}`
+      })
+      .then((message) => {console.log(message)})
+      .catch( console.error.bind(console) );
+    } else if(type === 'restaurants') {
+
+    } else if(type === 'activities') {
+
+    }
+  })
+
 });

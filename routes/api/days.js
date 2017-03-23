@@ -44,6 +44,28 @@ router.delete('/api/days/:id', function(req, res, next) {
     .catch(next)
 });
 
+router.post('/api/days/:dayId/hotel/:hotelId', function(req, res, next) {
+    console.log('we bout to save a homie');
+    Day.findOne({
+        where: {
+            number: +req.params.dayId
+        }
+    })
+    .then((dayToModify) => {
+        dayToModify.setHotelId(req.params.hotelId);
+        return daytoModify.save()
+        .then(function() {
+            console.log('saved homie')
+        })
+        .catch(()=> {
+            console.log('error in 1st place')
+        });
+    })
+    .catch(()=> {
+        console.log('error in 2nd place')
+    });
+});
+
 //creates a specific day
 router.post('/api/days/:id', function(req, res, next) {
     Day.findOrCreate({
@@ -56,5 +78,7 @@ router.post('/api/days/:id', function(req, res, next) {
     })
     .catch(next)
 })
+
+
 
 module.exports = router;
